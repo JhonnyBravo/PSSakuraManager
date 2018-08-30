@@ -69,19 +69,8 @@ function Set-SakuraEditorPath(){
 <#
 .SYNOPSIS
 bregonig.dll をインストールします。
-
-.PARAMETER x32
-32 bit 版 bregonig.dll をインストールします。
-
-.PARAMETER x64
-64 bit 版 bregonig.dll をインストールします。
 #>
-function Install-Bregonig([switch]$x32,[switch]$x64){
-    if($x32 -eq $false -and $x64 -eq $false){
-        Write-Output "オプションを指定してください。"
-        return
-    }
-    
+function Install-Bregonig(){
     if(Test-Path "${HOME}/sakura[0-9]*"){
         $base_name=(Split-Path -Leaf $URL["bregonig"])
         $dir_name=($base_name -replace ".zip","")
@@ -91,12 +80,7 @@ function Install-Bregonig([switch]$x32,[switch]$x64){
         Uninstall-Bregonig
         Expand-Archive "${HOME}/Downloads/${base_name}" "${sakura_path}/${dir_name}"
         Remove-Item "${HOME}/Downloads/${base_name}"
-
-        if($x32){
-            Copy-Item "${sakura_path}/${dir_name}/bregonig.dll" $sakura_path
-        }elseif($x64){
-            Copy-Item "${sakura_path}/${dir_name}/x64/bregonig.dll" $sakura_path
-        }
+        Copy-Item "${sakura_path}/${dir_name}/bregonig.dll" $sakura_path
     }else{
         Write-Output "Sakura Editor がインストールされていません。"
         return
